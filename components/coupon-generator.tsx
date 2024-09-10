@@ -5,11 +5,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Copy, RefreshCw } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
 
-export function CouponGenerator() {
+export default function CouponGenerator() {
   const [couponCode, setCouponCode] = useState('')
-  const { toast } = useToast()
+  const [notification, setNotification] = useState({ message: '', visible: false })
 
   const generateCouponCode = () => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -23,15 +22,19 @@ export function CouponGenerator() {
   const copyCouponCode = async () => {
     if (couponCode) {
       await navigator.clipboard.writeText(couponCode)
-      toast({
-        title: "Copied!",
-        description: "Coupon code copied to clipboard.",
-      })
+      showNotification('Coupon code copied to clipboard!')
     }
   }
 
+  const showNotification = (message: string) => {
+    setNotification({ message, visible: true })
+    setTimeout(() => {
+      setNotification({ message: '', visible: false })
+    }, 3000)
+  }
+
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto relative">
       <CardHeader>
         <CardTitle>Coupon Generator</CardTitle>
         <CardDescription>Click the button to generate a coupon code.</CardDescription>
@@ -67,6 +70,11 @@ export function CouponGenerator() {
           Use this code at checkout for a special discount!
         </p>
       </CardFooter>
+      {notification.visible && (
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow-lg transition-opacity duration-300">
+          {notification.message}
+        </div>
+      )}
     </Card>
   )
 }
