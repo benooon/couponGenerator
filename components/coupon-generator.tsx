@@ -9,14 +9,23 @@ import { Copy, RefreshCw } from "lucide-react"
 export default function CouponGenerator() {
   const [couponCode, setCouponCode] = useState('')
   const [notification, setNotification] = useState({ message: '', visible: false })
+  const [userHasGenerated, setUserHasGenerated] = useState(false)
 
-  const generateCouponCode = () => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    let result = ''
-    for (let i = 0; i < 8; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length))
+  const generateCouponCode = async () => {
+    try {
+      const userId = 123 // Replace with actual user ID (from auth or session)
+      const response = await fetch(`/api/generate-coupon?userId=${userId}`)
+      const data = await response.json()
+      if (response.ok) {
+        setCouponCode(data.coupon)
+        localStorage.setItem('generatedCoupon', data.coupon) // Optionally save locally
+        setUserHasGenerated(true)
+      } else {
+        showNotification(data.message || 'שגיאה ביצירת הקופון.')
+      }
+    } catch (error) {
+      showNotification('שגיאה ביצירת הקופון.')
     }
-    setCouponCode(result)
   }
 
   const copyCouponCode = async () => {
@@ -41,22 +50,19 @@ export default function CouponGenerator() {
           <CardDescription>לחץ על הכפתור כדי לייצר קוד קופון.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Button 
-            onClick={generateCouponCode} 
+          <Button
+            onClick={generateCouponCode}
             className="w-full bg_color_green text-white"
+            disabled={userHasGenerated}
           >
             ייצר קוד קופון
             <RefreshCw className="ml-2 h-4 w-4" />
           </Button>
           {couponCode && (
             <div className="flex space-x-2">
-              <Input 
-                value={couponCode} 
-                readOnly 
-                className="font-mono bg-gray-200 text-gray-800"
-              />
-              <Button 
-                onClick={copyCouponCode} 
+              <Input value={couponCode} readOnly className="font-mono bg-gray-200 text-gray-800" />
+              <Button
+                onClick={copyCouponCode}
                 variant="outline"
                 size="icon"
                 className="border-gray-300 text-gray-800 hover:bg-gray-100"
