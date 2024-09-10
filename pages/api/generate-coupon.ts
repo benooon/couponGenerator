@@ -13,28 +13,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-      const client = new MongoClient(process.env.MONGO_URL  || "")
+      const client = new MongoClient(process.env.MONGO_URL  || "mongodb://mongo:AVytmhcmNHvtbYGzABuZRnCUYFUmltMY@junction.proxy.rlwy.net:32697")
       const db = client.db('test')
       const coupons = db.collection('coupons')
 
       // Check if the user already has a coupon
-      const existingCoupon = await coupons.findOne({ user_id: userId })
-      if (existingCoupon) {
-        return res.json({ coupon: existingCoupon.code }) // User already has a coupon
-      }
-
-      // Find an available (unused) coupon
       const availableCoupon = await coupons.findOneAndUpdate(
         { is_used: false },
-        { $set: { is_used: true, user_id: userId } },
+        { $set: { is_used: true } }, // Only mark it as used, but don't set user_id
         { returnDocument: 'after' }
       )
-      console.log(availableCoupon)
-      if (!availableCoupon?.value) {
+      // Find an available (unused) coupon
+      if (!availableCoupon || !availableCoupon?.code) {
         return res.status(400).json({ message: 'No coupons available' })
       }
 
-      res.json({ coupon: availableCoupon.value.code })
+
+      res.json({ coupon: availableCoupon?.code })
     } catch (error) {
       console.error('Error generating coupon:', error)
       res.status(500).json({ error: 'Failed to generate coupon' })
