@@ -28,6 +28,7 @@
   --chart-4: #FFD700; /* example chart color */
   --chart-5: #FF69B4; /* example chart color */
   --radius: 0.5rem;
+  --bg_color_green: #8EB551;
 }
 
 body {

@@ -46,8 +46,7 @@ export default function CouponGenerator() {
     <div dir="rtl" className="flex items-center justify-center min-h-screen bg-light_gray dark:bg-gray-900">
       <Card className="w-full max-w-md relative border border-gray-300">
         <CardHeader>
-          <CardTitle>מחולל קופונים</CardTitle>
-          <CardDescription>לחץ על הכפתור כדי לייצר קוד קופון.</CardDescription>
+          <CardTitle>קופון אינסטגרם סודי ללקוחות לופה</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <Button
