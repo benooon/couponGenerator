@@ -43,7 +43,7 @@ export default function CouponGenerator() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-light_gray dark:bg-gray-900">
+    <div dir="rtl" className="flex items-center justify-center min-h-screen bg-light_gray dark:bg-gray-900">
       <Card className="w-full max-w-md relative border border-gray-300">
         <CardHeader>
           <CardTitle>מחולל קופונים</CardTitle>
@@ -56,10 +56,10 @@ export default function CouponGenerator() {
             disabled={userHasGenerated}
           >
             ייצר קוד קופון
-            <RefreshCw className="ml-2 h-4 w-4" />
+            <RefreshCw className="mr-2 h-4 w-4" /> {/* Switch ml to mr for RTL */}
           </Button>
           {couponCode && (
-            <div className="flex space-x-2">
+            <div className="flex space-x-reverse space-x-2">
               <Input value={couponCode} readOnly className="font-mono bg-gray-200 text-gray-800" />
               <Button
                 onClick={copyCouponCode}
@@ -75,11 +75,11 @@ export default function CouponGenerator() {
         </CardContent>
         <CardFooter>
           <p className="text-sm text-muted-foreground">
-            השתמש בקוד זה בקופה לקבלת הנחה מיוחדת!
+          100 ש"ח הנחה - ממחיר מחירון לופה המלא ברכישת ספר תמונות לא כולל פורמט מיני לופה ופנורמי קטן • ייעודי לעוקבי לופה באינסטגרם • בתוקף למימוש להזמנות שישלחו מ- 13.10.24 עד 20.10.24 • ההטבה למימוש חד פעמי • דמי טיפול ומשלוח בהתאם למחירון המשלוחים באתר • לא יינתן החזר כספי להזמנות שיישלחו ללא קוד הקופון • יש להקליד את קוד הקופון במקום המיועד בקופה, ההנחה תוצג בעת ההזמנה בשלב התשלום • ללא כפל הטבות / הנחות / קופונים / מבצעים •
           </p>
         </CardFooter>
         {notification.visible && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg_color_green text-white px-4 py-2 rounded shadow-lg transition-opacity duration-300">
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg_color_green px-4 py-2 rounded shadow-lg  duration-300">
             {notification.message}
           </div>
         )}

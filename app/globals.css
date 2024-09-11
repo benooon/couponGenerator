@@ -30,7 +30,6 @@
   --radius: 0.5rem;
 }
 
-
 body {
   color: var(--foreground);
   background: var(--background);
@@ -44,42 +43,25 @@ body {
 }
 
 @layer base {
-  :root {
-    --background: #ffffff;
-    --foreground: #171717;
-    --card: #ffffff;
-    --card-foreground: #171717;
-    --popover: #ffffff;
-    --popover-foreground: #171717;
-    --primary: #8EB541; /* color_green */
-    --primary-foreground: #ffffff;
-    --secondary: #BCDCDA; /* light_blue */
-    --secondary-foreground: #487526; /* color_dark_green */
-    --muted: #BCDCDA; /* light_blue */
-    --muted-foreground: #9F9F9F; /* gray */
-    --accent: #BCDCDA; /* light_blue */
-    --accent-foreground: #487526; /* color_dark_green */
-    --destructive: #F40B0B; /* red */
-    --destructive-foreground: #ffffff;
-    --border: #7B7B7B; /* gray_disabled */
-    --input: #7B7B7B; /* gray_disabled */
-    --ring: #487526; /* color_dark_green */
-    --chart-1: #FF6347; /* example chart color */
-    --chart-2: #32CD32; /* example chart color */
-    --chart-3: #4682B4; /* example chart color */
-    --chart-4: #FFD700; /* example chart color */
-    --chart-5: #FF69B4; /* example chart color */
-    --radius: 0.5rem;
-  }
-
-  
-}
-
-@layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+    direction: ltr; /* Default is left-to-right */
   }
+}
+
+/* RTL support */
+body[dir="rtl"] {
+  direction: rtl;
+}
+
+.text-rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.flex-rtl {
+  @apply flex-row-reverse;
 }
