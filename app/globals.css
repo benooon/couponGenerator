@@ -31,10 +31,16 @@
   --bg_color_green: #8EB551;
 }
 
+@font-face {
+  font-family: 'Lupa PLONI REGULAR';
+  src: local('Lupa PLONI REGULAR'), url(fonts/PLONI-REGULAR-AAA.OTF);
+}
+
+
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Ploni', sans-serif; /* Fallback to sans-serif if Ploni isn't available */
 }
 
 @layer utilities {
