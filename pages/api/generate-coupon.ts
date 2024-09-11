@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-      const client = new MongoClient(process.env.MONGO_URL  || "mongodb://mongo:AVytmhcmNHvtbYGzABuZRnCUYFUmltMY@junction.proxy.rlwy.net:32697")
+      const client = new MongoClient(process.env.MONGO_URL||"")
       const db = client.db('test')
       const coupons = db.collection('coupons')
 
