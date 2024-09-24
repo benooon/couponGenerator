@@ -6,6 +6,10 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
+    res.setHeader('Access-Control-Allow-Credentials', 'true')
+    res.setHeader('Access-Control-Allow-Origin', '*') // Set to '*' or your specific domain(s)
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
     const { userId } = req.query
 
     if (!userId) {
