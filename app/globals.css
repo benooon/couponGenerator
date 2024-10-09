@@ -3,8 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background:radial-gradient(100.86% 100.86% at 0% 1.4%, #BCDCDA 0%, #EAF4D8 100%);
   --card: #ffffff;
   --card-foreground: #171717;
   --popover: #ffffff;
