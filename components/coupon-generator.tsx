@@ -94,11 +94,11 @@ export default function CouponGenerator() {
 
         </CardFooter>
         {notification.visible && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg_color_green px-4 py-2 rounded shadow-lg duration-300">
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg_color_green px-4 py-2 rounded shadow-lg duration-300 bg-white">
             {notification.message}
-
           </div>
         )}
+      
       </Card>
     </div>
   )
