@@ -1,71 +1,50 @@
-import { MongoClient } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
+import connectToDatabase from '../api/db';
+import mongoose from 'mongoose';
 
-let cachedClient: MongoClient | null = null;
+// Define the schema for the coupon (optional, but recommended)
+const CouponSchema = new mongoose.Schema({
+  code: String,
+  is_used: { type: Boolean, default: false },
+  user_id: { type: String, default: null }
+});
 
-async function connectToDatabase() {
-  if (cachedClient) {
-    console.log("Using cached MongoDB client");
-    return cachedClient;
-  }
-
-  console.log("Creating a new MongoDB client...");
-  const client = new MongoClient(process.env.MONGO_URL || "");
-  
-  try {
-    await client.connect();
-    console.log("MongoDB connected successfully");
-    cachedClient = client;
-    return client;
-  } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
-    throw new Error("Failed to connect to MongoDB");
-  }
-}
+const Coupon = mongoose.models.Coupon || mongoose.model('Coupon', CouponSchema);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
-    console.log("Received GET request");
-
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Set to '*' or your specific domain(s)
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
     const { userId } = req.query;
+
     if (!userId) {
-      console.warn("User ID not provided");
       return res.status(400).json({ message: 'User ID is required' });
     }
 
     try {
-      console.log("Connecting to database...");
-      const client = await connectToDatabase();
-      const db = client.db('test');
-      const coupons = db.collection('coupons');
+      // Connect to MongoDB
+      await connectToDatabase();
 
-      console.log(`Looking for available coupons for userId: ${userId}`);
-      
-      // Check if an unused coupon is available and update it
-      const availableCoupon = await coupons.findOneAndUpdate(
+      // Find an available (unused) coupon and mark it as used
+      const availableCoupon = await Coupon.findOneAndUpdate(
         { is_used: false },
-        { $set: { is_used: true } },
-        { returnDocument: 'after' }
+        { is_used: true },
+        { new: true } // Return the updated document
       );
 
-      if (!availableCoupon?.value) {
-        console.log("No available coupons found");
+      if (!availableCoupon) {
         return res.status(400).json({ message: 'No coupons available' });
       }
 
-      console.log("Coupon found and marked as used:", availableCoupon.value.code);
-      res.json({ coupon: availableCoupon?.value.code });
+      res.json({ coupon: availableCoupon.code });
     } catch (error) {
-      console.error("Error generating coupon:", error);
+      console.error('Error generating coupon:', error);
       res.status(500).json({ error: 'Failed to generate coupon' });
     }
   } else {
-    console.warn("Invalid request method:", req.method);
     res.status(405).json({ message: 'Method Not Allowed' });
   }
 }
