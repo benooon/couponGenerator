@@ -17,13 +17,15 @@
     "lucide-react": "^0.439.0",
     "mapbox-gl": "^3.6.0",
     "mongodb": "^6.8.1",
+    "mongoose": "^8.7.1",
     "next": "14.2.9",
     "papaparse": "^5.4.1",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
-    "tailwindcss-rtl": "^0.9.0"
+    "tailwindcss-rtl": "^0.9.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/node": "^20",
